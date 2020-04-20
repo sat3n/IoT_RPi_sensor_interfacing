@@ -4,8 +4,8 @@
 #include "MQTTClient.h"
 
 //#define ADDRESS     "tcp://192.168.1.32:1883"
-//#define ADDRESS     "tcp://192.168.43.176:1883"
-#define ADDRESS     "tcp://192.168.43.220:1883"
+#define ADDRESS     "tcp://192.168.43.176:1883"
+//#define ADDRESS     "tcp://192.168.43.220:1883"
 #define CLIENTID    "sat3nPi2"
 #define AUTHMETHOD  "saten"
 #define AUTHTOKEN   "sat3n"

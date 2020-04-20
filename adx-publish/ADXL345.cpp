@@ -74,8 +74,8 @@ namespace exploringRPi {
 
 //Please replace the following address with the address of your server
 //#define ADDRESS    "tcp://192.168.1.32:1883"
-//#define ADDRESS    "tcp://192.168.43.176:1883"
-#define ADDRESS     "tcp://192.168.43.220:1883"
+#define ADDRESS    "tcp://192.168.43.176:1883"
+//#define ADDRESS     "tcp://192.168.43.220:1883"
 #define CLIENTID   "sat3nPi"
 #define AUTHMETHOD "saten"
 #define AUTHTOKEN  "sat3n"
