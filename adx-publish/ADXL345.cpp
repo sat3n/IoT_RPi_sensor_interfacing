@@ -30,6 +30,7 @@
 #include <sstream>
 #include <fstream>
 #include <string.h>
+//#include <will_options.h>
 #include "MQTTClient.h"
 #define  CPU_TEMP "/sys/class/thermal/thermal_zone0/temp"
 
@@ -83,13 +84,14 @@ namespace exploringRPi {
 #define QOS        1
 #define TIMEOUT    10000L
 
-float getCPUTemperature() {        // get the CPU temperature
+
+double getCPUTemperature() {        // get the CPU temperature
    int cpuTemp;                    // store as an int
    fstream fs;
    fs.open(CPU_TEMP, fstream::in); // read from the file
    fs >> cpuTemp;
    fs.close();
-   return (((float)cpuTemp)/1000);
+   return (((double)cpuTemp)/1000);
 }
 
 
@@ -225,23 +227,36 @@ void ADXL345::displayPitchAndRoll(int iterations){
 
 //-------publish code below this-------------
 
-int ADXL345::publish() {
+int ADXL345::publish(int iteration) {
+	
+	int count = 0;
+	int rc;
+	while(count< iteration){
+	this->readSensorState();
    char str_payload[100];          // Set your max message size here
    MQTTClient client;
    MQTTClient_connectOptions opts = MQTTClient_connectOptions_initializer;
    MQTTClient_message pubmsg = MQTTClient_message_initializer;
    MQTTClient_deliveryToken token;
    MQTTClient_create(&client, ADDRESS, CLIENTID, MQTTCLIENT_PERSISTENCE_NONE, NULL);
+   MQTTClient_willOptions will = MQTTClient_willOptions_initializer;
+	char errormessage[50];
+	sprintf(errormessage, "\n Error while publishing message!!!!");
+	will.topicName = TOPIC;
+	will.message = errormessage;
+	opts.will = &will;
    opts.keepAliveInterval = 20;
    opts.cleansession = 1;
    opts.username = AUTHMETHOD;
    opts.password = AUTHTOKEN;
-   int rc;
+   will.qos = QOS;
+   
    if ((rc = MQTTClient_connect(client, &opts)) != MQTTCLIENT_SUCCESS) {
       cout << "Failed to connect, return code " << rc << endl;
       cout<< "Error -1, check your connection details";
    }
-   sprintf(str_payload, "{\"d\":{\"CPUTemp\": %f }, {\"x-axis\": %i }, {\"y-axis\": %i }, {\"z-axis\": %i } }", getCPUTemperature(), this->accelerationX, this->accelerationY, this->accelerationZ);
+   
+   sprintf(str_payload, "{\"CPUTemp\": %f }, {\"x-axis\": %i }, {\"y-axis\": %i }, {\"z-axis\": %i }", getCPUTemperature(), this->accelerationX, this->accelerationY, this->accelerationZ);
    
    //sprintf(str_payload, "{\"d\":{\"CPUTemp\": %f }, {\"Pitch\": %f }, {\"Roll\": %f}}",getCPUTemperature(),this->getPitch,this->getRoll);
 
@@ -257,7 +272,10 @@ int ADXL345::publish() {
    cout << "Message with token " << (int)token << " delivered." << endl;
    MQTTClient_disconnect(client, 10000);
    MQTTClient_destroy(&client);
-   return rc;
+   count ++;
+   
+}
+return rc;
 }
 
 //-------publish code above this-------------
