@@ -82,7 +82,7 @@ public:
 
 	// Debugging method to display and update the pitch/roll on the one line
 	virtual void displayPitchAndRoll(int iterations = 6);
-	virtual int publish(int iterations = 1);
+	virtual int publish(int iterations = 4);//publish method dec
 	virtual ~ADXL345();
 };
 

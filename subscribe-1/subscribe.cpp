@@ -19,7 +19,7 @@
 
 using namespace std;
 
-//json parse
+//json parse method 
 void json_parse(json_object *jobj) {
  enum json_type type;
  json_object_object_foreach(jobj, key, val) {
@@ -31,7 +31,7 @@ void json_parse(json_object *jobj) {
    temperature = json_object_get_double(val);
    break;
  }
- //gpio
+ //using GPIO pin 11 to trigger alarm
  if (temperature >= 50){
      printf("raspberry pi gpio pin 11 is used \n");
 	if (wiringPiSetup() == -1){
@@ -67,8 +67,8 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
         putchar(*payloadptr++);
     }
     putchar('\n');
-    json_object * jobj = json_tokener_parse((char*) message->payload);
-    json_parse(jobj);
+    json_object * jobj = json_tokener_parse((char*) message->payload);//pointer to payload as input
+    json_parse(jobj);//method jsnprs_called_here
     MQTTClient_freeMessage(&message);
     MQTTClient_free(topicName);
     return 1;

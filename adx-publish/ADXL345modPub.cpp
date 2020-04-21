@@ -74,9 +74,9 @@ namespace exploringRPi {
 //--------publish code below this-----------
 
 //Please replace the following address with the address of your server
-//#define ADDRESS    "tcp://192.168.1.32:1883"
-#define ADDRESS    "tcp://192.168.43.176:1883"
-//#define ADDRESS     "tcp://192.168.43.220:1883"
+//#define ADDRESS    "tcp://192.168.1.32:1883" //wifi
+#define ADDRESS    "tcp://192.168.43.176:1883" //hotspotOP5
+//#define ADDRESS     "tcp://192.168.43.220:1883"//hotspotVM
 #define CLIENTID   "sat3nPi"
 #define AUTHMETHOD "saten"
 #define AUTHTOKEN  "sat3n"
@@ -239,9 +239,9 @@ int ADXL345::publish(int iteration) {
    MQTTClient_message pubmsg = MQTTClient_message_initializer;
    MQTTClient_deliveryToken token;
    MQTTClient_create(&client, ADDRESS, CLIENTID, MQTTCLIENT_PERSISTENCE_NONE, NULL);
-   MQTTClient_willOptions will = MQTTClient_willOptions_initializer;
-	char errormessage[50];
-	sprintf(errormessage, "\n Error while publishing message!!!!");
+   MQTTClient_willOptions will = MQTTClient_willOptions_initializer; //lastWill
+	char errormessage[50]; //error msg lenght
+	sprintf(errormessage, "\n Error while publishing message!!!!");//last will message displyed when pub interrupted
 	will.topicName = TOPIC;
 	will.message = errormessage;
 	opts.will = &will;
