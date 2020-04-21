@@ -240,7 +240,7 @@ int ADXL345::publish(int iteration) {
    MQTTClient_deliveryToken token;
    MQTTClient_create(&client, ADDRESS, CLIENTID, MQTTCLIENT_PERSISTENCE_NONE, NULL);
    MQTTClient_willOptions will = MQTTClient_willOptions_initializer; //lastWill
-	char errormessage[50]; //error msg lenght
+	char errormessage[50]; //error msg length
 	sprintf(errormessage, "\n Error while publishing message!!!!");//last will message displyed when pub interrupted
 	will.topicName = TOPIC;
 	will.message = errormessage;

@@ -33,17 +33,15 @@ void json_parse(json_object *jobj) {
  }
  //using GPIO pin 11 to trigger alarm
  if (temperature >= 50){
-     printf("raspberry pi gpio pin 11 is used \n");
+     printf("Temperature is above 50\n");
 	if (wiringPiSetup() == -1){
 		printf("Exit");
 	}
 	pinMode (0,OUTPUT);
 	digitalWrite(0, 1);
-    usleep(100000);
+    usleep(10000);
 	digitalWrite(0, 0);
-    usleep(100000);
-	
-	//pinMode (0,OUTPUT);
+    usleep(10000);
  }
 }
 }
